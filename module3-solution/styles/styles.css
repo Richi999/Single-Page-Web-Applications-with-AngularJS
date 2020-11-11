@@ -1,3 +1,6 @@
+input[type="button"] {
+  background-color: #ff6666;
+}
 h1 {
   margin-bottom: 30px;
 }

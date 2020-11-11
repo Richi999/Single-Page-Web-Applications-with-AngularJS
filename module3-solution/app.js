@@ -1,69 +1,70 @@
-(function () {
+(function() {
+    'use strict';
 
-'user strict';
+    angular.module('NarrowItDownApp', [])
+        .controller('NarrowItDownController', NarrowItDownController)
+        .service('MenuSearchService', MenuSearchService)
+        .constant('ApiBasePath', "https://davids-restaurant.herokuapp.com")
+        .directive('foundItems', FoundItems);
 
-angular.module('NarrowItDownApp', [])
-.controller('NarrowItDownController', NarrowItDownController)
-.service('MenuSearchService', MenuSearchService)
-.directive('foundItems', foundItemsDirective);
-
-    function foundItemsDirective() {
-        var ddo = {
-            templateUrl: 'founditems.html',
+    function FoundItems() {
+        var doer = {
+            restrict: 'E',
+            templateUrl: 'foundItems.html',
             scope: {
-                found: '<',
-                onRemove: '&',
-                isEmpty: '<'
-            }
+                foundItems: '<',
+                onEmpty: '<',
+                onRemove: '&'
+            },
+            controller: NarrowItDownController,
+            controllerAs: 'menu',
+            bindToController: true
         };
 
-        return ddo;
+        return doer;
     }
 
     NarrowItDownController.$inject = ['MenuSearchService'];
+
     function NarrowItDownController(MenuSearchService) {
         var menu = this;
+        menu.shortName = '';
 
-        menu.getmenuitems = function (searchTerm) {
-            menu.empty = searchTerm == ("" || undefined)? true : false;
+        menu.matchedMenuItems = function(searchTerm) {
+            var promise = MenuSearchService.getMatchedMenuItems(searchTerm);
 
-            if (!menu.empty) {
-                var promise = MenuSearchService.getMatchedMenuItems(searchTerm);
-                menu.found = [];
-                promise.then(function (response) {
-                    menu.found = response;
-                    menu.empty = menu.found.length > 0 ? false : true;
-
-                });
-            }
-
+            promise.then(function(items) {
+                if (items.length > 0 && items ) {
+                    menu.message = '';
+                    menu.found = items;
+                } else {
+                    menu.message = 'Nothing found!';
+                    menu.found = [];
+                }
+            });
         };
 
-        menu.removeItem = function(itemIndex) {
-            return menu.found.splice(itemIndex, 1);
-        };
+        menu.removeMenuItem = function(itemIndex) {
+            menu.found.splice(itemIndex, 1);
+        }
     }
 
-    MenuSearchService.$inject = ['$http'];
-    function MenuSearchService($http) {
+    MenuSearchService.$inject = ['$http', 'ApiBasePath'];
+    function MenuSearchService($http, ApiBasePath) {
         var service = this;
 
         service.getMatchedMenuItems = function(searchTerm) {
             return $http({
                 method: "GET",
-                url: "https://davids-restaurant.herokuapp.com/menu_items.json"
-
-            }).then(function(result) {
+                url: (ApiBasePath + "/menu_items.json")
+            }).then(function(response) {
                 var foundItems = [];
-                var temp = result.data.menu_items;
-                if (searchTerm != undefined && searchTerm != "") {
-                    for(var i = 0; i < temp.length; i++) {
-                      if (temp[i].description.toLowerCase().indexOf(searchTerm.toLowerCase()) != -1)
-                        foundItems.push(temp[i]);
 
+                for (var i = 0; i < response.data['menu_items'].length; i++) {
+                    if (searchTerm.length > 0 && response.data['menu_items'][i]['description'].toLowerCase().indexOf(searchTerm) !== -1) {
+                        foundItems.push(response.data['menu_items'][i]);
                     }
                 }
-
 
                 return foundItems;
             });
