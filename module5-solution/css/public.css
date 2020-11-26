@@ -37,6 +37,90 @@
 }
 /* END HOME PAGE */
 
+/* SIGN UP PAGE */
+form#signUpForm {
+  width: 1000px;
+  margin-right: auto;
+  margin-left: auto;
+  border: .5px solid black;
+  padding: 15px;
+  margin-top: 50px;
+  border-radius: 15px; 
+  background: #f6b319;
+  margin-bottom: 60px;
+  color: #61122f;
+  font-family: 'Lora', serif;
+}
+
+form#signUpForm h3 {
+  font-weight: 900;
+}
+form#signUpForm small {
+  color: black;
+}
+form#signUpForm label {
+  font-weight: 500;
+}
+
+form#signUpForm  button {
+  font-size: 20px;
+  color:  black;
+  width: 250px;
+  display: block;
+  margin: 0 auto 5px;
+  border: 1px solid black;
+}
+
+.ng-touched.ng-valid {
+  border: 2px green solid;
+}
+
+.ng-touched.ng-invalid {
+  border: 2px red solid;
+}
+
+form#signUpForm input#novalidate {
+  border: none;
+}
+/*END OF SIGN UP PAGE*/
+/* PROFILE PAGE */
+form#profileForm {
+  width: 1000px;
+  margin-right: auto;
+  margin-left: auto;
+  border: .5px solid black;
+  padding: 15px;
+  margin-top: 50px;
+  border-radius: 15px; 
+  background: #f6b319;
+  margin-bottom: 60px;
+  color: #61122f;
+  font-size: 25px;
+  font-family: 'Lora', serif;
+}
+
+form#profileForm h3 {
+  margin-bottom: 50px;
+}
+
+form#profileForm span.info {
+  float: right;
+  margin-right: 150px
+}
+
+form#profileForm hr {
+  height: 2px;
+  color: black;
+  background-color: #61122f;
+  border-width: 0px;
+}
+form#profileForm label.col-form-label {
+  margin-left: 150px;
+}
+form#profileForm label.col-form-labelFav {
+  margin-left: 135px;
+}
+/* END OF PROFILE PAGE */
 /* MENU CATEGORIES PAGE */
 .category-tile {
   position: relative;

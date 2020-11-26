@@ -15,6 +15,7 @@ function MenuService($http, ApiPath) {
     });
   };
 
+
   service.getMenuItems = function (category) {
     var config = {};
     if (category) {
@@ -26,16 +27,30 @@ function MenuService($http, ApiPath) {
     });
   };
 
-  service.getMenuItemByShortName = function (shortName) {
-    if (shortName) {
-      return $http.get(ApiPath + "/menu_items/" + shortName.toUpperCase() + ".json").then(function (response) {
+
+  service.getFavItems = function (category) {
+    // console.log("service working")
+    if (category) {
+      return $http.get(ApiPath + '/menu_items/' + category + '.json').then(function (response) {
+        console.log("service", response.data)
         return response.data;
       });
     }
-  }
+  };
+
+
+  // service.getFavItems = function (category) {
+  //   var config = {};
+  //     if (category) {
+  //     config.params = {'short_name': category};
+  //     var response = 
+  //      $http.get(ApiPath + '/menu_items/' + category + '.json')
+  //      return response
+  //     } else {
+  //     return "empty";
+  //     }
+  //   } 
+
 
 }
-
-
-
 })();
